@@ -1,24 +1,59 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>repl.it</title>
-    <link href="style.css" rel="stylesheet" type="text/css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <title>Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   </head>
+
   <body>
-    <h1>My Page</h1>
+    <nav>
+        <div class="nav-wrapper teal" style="padding-left: 10px;">
+           <a href="#!" class="brand-logo">Ajax Demo</a>
+        </div>
+    </nav>
+    <main class="row" style="padding: 40px">
+         <table>
+           <thead>
+                <tr>
+                   <th>#</th>
+                   <th>Name</th>
+                   <th>Category</th>
+                   <th>Image</th>
+                </tr>
+                </thead>
+                  <tbody id="result">
+                                                  
+                  </tbody>
+           </table>
+     </main>
+     <script>
+      async function getData(url){
+        try{
+          let response = await fetch(url);  // Send HTTP request and get response
+          let result = await response.json();  // Get data from response
+          drawTable(result.drinks);  // Pass drinks array to drawTable function
+        } catch(e) {
+          console.log(e);  // Catch and log any errors
+        }
+      }
 
-    <input type="button" id="alertBtn" value="alert" onclick="alertFun()"/>
-    <input type="button" value="confirm" onclick="confirmFun()"/>
-    <input type="button" value="prompt" onclick="promptFun()"/>
+      getData("https://www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita");//using this api becasuse the one from the repo isnt avail 
 
-    <span id="result"></span>
-
-    <script>
-
-
-    </script>
-    <script src="script.js"></script>
+      function drawTable(records) {
+        let result = document.querySelector('#result');
+        let html = '';
+        for (let record of records) {
+          html += `<tr>
+            <td>${record.idDrink}</td>
+            <td>${record.strDrink}</td>
+            <td>${record.strCategory}</td>
+            <td><a href="${record.strDrinkThumb}" target="_blank">Image</a></td>
+          </tr>`;
+        }
+        result.innerHTML = html;  // Add the generated HTML to the DOM
+      }
+     </script>
   </body>
 </html>
